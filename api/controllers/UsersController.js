@@ -73,7 +73,7 @@ module.exports = {
     },
     friends: function(req, res) {
         var request = req.body;
-        if (request.friends && request.deviceId) {
+        if (request.friend && request.deviceId && request.ticket) {
             async.waterfall([
                 function(callback) {
                     Users.findOne({
@@ -88,21 +88,20 @@ module.exports = {
                     });
                 },
                 function(result, callback) {
-                    request.friends.forEach(function(devId) {
                         Users.findOne({
-                            deviceId: devId
+                            deviceId: request.friend,
+                            ticket: request.ticket
                         }).exec(function(err, wantedUser) {
                             if (err) {
                                 console.log('Error trying to find friends of a user!');
                                 callback(err);
                             } else if (wantedUser) {
-                                callback(null, devId, result);
+                                callback(null, request.friend, result);
                             } else {
                                 //callback('Friend not found by deviceId!');
                                 console.log('Friend not found by deviceId!');
                             }
                         });
-                    });
                 },
                 function(friend, user, callback) {
                     if (!ArrayService.itemExists(user.connectedUsers, friend)) {
@@ -130,6 +129,22 @@ module.exports = {
             res.badRequest({
                 message: 'Array of ids or your deviceId not present!'
             });
+        }
+    },
+    updateTicket: function(req, res){
+        var model = req.body;
+        if(!model.deviceId || !model.ticket){
+            res.badRequest({ message: 'Required data is missing!' });
+        } else {
+            Users.update({ deviceId: model.deviceId }, { ticket: model.ticket })
+                .exec(function(err, updated){
+                    if(err){
+                        console.log('Error while updating invite ticket!');
+                        res.serverError(err);
+                    } else {
+                        res.ok({ message: 'Ticket updated succesffuly' });
+                    }
+                });
         }
     },
     location: function(req, res) {

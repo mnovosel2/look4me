@@ -36,7 +36,7 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  'post /users/create':'UsersController.create'
+  'POST /users/create':'UsersController.create'
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

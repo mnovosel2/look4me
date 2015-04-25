@@ -44,6 +44,8 @@ deviceId *string*
 
 deviceOS *string*
 
+registerId *string*
+
 username? *string*
 
 email? *string*

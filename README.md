@@ -98,12 +98,30 @@ email? *string*
 
 deviceId *string*
 
-friends['deviceId','deviceId']  *array*
+friend(deviceId)  *string*
+
+ticket(invitation ticket from QR code) *string*
 
 **RESPONSE**
 
 ```{
     "message": "Friends added succesffuly"
+}```
+
+##UPDATE TICKET
+
+**PUT**
+
+*/users/ticket*
+
+deviceId *string*
+
+ticket *string*
+
+**RESPONSE**
+
+```{
+    "message": "Ticket updated succesfully"
 }```
 
 

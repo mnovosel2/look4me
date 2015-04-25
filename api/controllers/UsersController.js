@@ -50,17 +50,34 @@ module.exports = {
             }
         });
     },
-    get: function(req, res) {
-        if (req.params.deviceId) {
-            Users.findOne({
-                deviceId: req.params.deviceId
-            }).exec(function(err, model) {
-                if (err) {
-                    console.log(err);
-                    res.serverError(err);
-                } else {
-                    res.ok(model);
+    get: function(req, res){
+        if(req.params.deviceId){
+            async.waterfall([
+                function(callback){
+                    Users.findOne({ deviceId: req.params.deviceId }).exec(function(err, model){
+                        if(err){
+                            console.log(err);
+                            res.serverError(err);
+                        } else if(model){
+                            callback(null, model);
+                        } else{
+                            callback('User not found!');
+                        }
+                    });
+                },
+                function(result, callback){
+                    Users.find({ deviceId: result.connectedUsers }).exec(function(err, model){
+                        if(err){
+                            console.log(err);
+                            res.serverError(err);
+                        } else {
+                            res.ok({ user: result, friends: model });
+                        }
+                    });
                 }
+            ], function(err){
+                console.log(err);
+                res.serverError();
             });
         } else {
             res.badRequest({

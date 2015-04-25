@@ -8,15 +8,21 @@
 module.exports = {
     attributes: {
         username: {
-            type: 'string',
-            required: true
+            type: 'string'
         },
-        password: {
-            type: 'string',
-            required: true
+        deviceId:{
+            type:'string',
+            required:true
         },
-        age: {
-            type: 'int'
+        deviceOS:{
+            type:'string',
+            required:true,
+        },
+        email:{
+            type:'string'
+        },
+        connectedUsers:{
+            type:'array'
         }
     }
 };

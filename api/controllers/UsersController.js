@@ -31,6 +31,13 @@ module.exports = {
         } else {
             res.badRequest({ message: 'No device id present in request!' });
         }
-        
+    },
+    friends: function(req, res){
+        var friends = req.body;
+        res.ok('friends');
+    },
+    location: function(req, res){
+        var location = req.body;
+        res.ok('location');
     }
 };

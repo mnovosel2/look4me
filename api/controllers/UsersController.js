@@ -24,7 +24,7 @@ module.exports = {
             Users.find({ id: req.params.deviceId }).exec(function(err, model){
                 if(err){
                     console.log(err);
-                    res.serverError('kifla');
+                    res.serverError(err);
                 }
                 res.ok(model);
             });

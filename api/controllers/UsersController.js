@@ -4,29 +4,8 @@
  * @description :: Server-side logic for managing users
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-
+var geolib = require('geolib');
 module.exports = {
-    test: function(req, res) {
-        // User.find({});
-        var gcmResponse =
-            GCMService.registerClient('AIzaSyAv11GIIUUlsD9Exv9VpzMFWawd0skO574', 1)
-            .sendNotification({
-                registrationId: '234445',
-                data: {
-                    message1: 'msg1',
-                    message2: 'msg2'
-                }
-            });
-        if (gcmResponse) {
-            res.ok({
-                message: 'Ok'
-            });
-        } else {
-            res.badRequest({
-                message: 'Sending failed'
-            });
-        }
-    },
     create: function(req, res) {
         var user = req.body;
         if (!user.deviceId || !user.deviceOS) {
@@ -37,7 +16,7 @@ module.exports = {
             email: user.email || '',
             deviceId: user.deviceId,
             deviceOS: user.deviceOS,
-            registeredDevice:user.registerId
+            registeredDevice: user.registerId
         }).exec(function(err, inserted) {
             if (err) {
                 console.log(err);
@@ -50,32 +29,39 @@ module.exports = {
             }
         });
     },
-    get: function(req, res){
-        if(req.params.deviceId){
+    get: function(req, res) {
+        if (req.params.deviceId) {
             async.waterfall([
-                function(callback){
-                    Users.findOne({ deviceId: req.params.deviceId }).exec(function(err, model){
-                        if(err){
+                function(callback) {
+                    Users.findOne({
+                        deviceId: req.params.deviceId
+                    }).exec(function(err, model) {
+                        if (err) {
                             console.log(err);
                             res.serverError(err);
-                        } else if(model){
+                        } else if (model) {
                             callback(null, model);
-                        } else{
+                        } else {
                             callback('User not found!');
                         }
                     });
                 },
-                function(result, callback){
-                    Users.find({ deviceId: result.connectedUsers }).exec(function(err, model){
-                        if(err){
+                function(result, callback) {
+                    Users.find({
+                        deviceId: result.connectedUsers
+                    }).exec(function(err, model) {
+                        if (err) {
                             console.log(err);
                             res.serverError(err);
                         } else {
-                            res.ok({ user: result, friends: model });
+                            res.ok({
+                                user: result,
+                                friends: model
+                            });
                         }
                     });
                 }
-            ], function(err){
+            ], function(err) {
                 console.log(err);
                 res.serverError();
             });
@@ -153,17 +139,111 @@ module.exports = {
                 message: 'Required data is missing'
             });
         }
+        async.waterfall([
+            function(callback) {
+                Users.update({
+                    deviceId: user.deviceId
+                }, {
+                    longitude: user.longitude,
+                    latitude: user.latitude
+                }).exec(function(err, inserted) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        callback(null, inserted);
+                    }
+                });
+            },
+            function(result, callback) {
+                Users.find({
+                    deviceId: result[0].connectedUsers
+                }).exec(function(err, usersFound) {
+                    var minimalDistance = geolib.getDistance({
+                            latitude: result[0].latitude,
+                            longitude: result[0].longitude
+                        }, {
+                            latitude: usersFound[0].latitude,
+                            longitude: usersFound[0].longitude
+                        }),
+                        itemWithMinDistance = usersFound[0];
+                    usersFound.forEach(function(item) {
+                        var getDistance = geolib.getDistance({
+                            latitude: result[0].latitude,
+                            longitude: result[0].longitude
+                        }, {
+                            latitude: item.latitude,
+                            longitude: item.longitude
+                        });
+                        if (getDistance < minimalDistance) {
+                            minimalDistance = getDistance;
+                            itemWithMinDistance = item;
+                        }
+                    });
+
+                    console.log(minimalDistance);
+                    console.log(itemWithMinDistance);
+                    // if (getDistance <= 10) {
+
+                    // } else if (getDistance > 10 && getDistance <= 100) {
+
+                    // } else if (getDistance > 100 && getDistance <= 500) {
+
+                    // } else if (getDistance > 500 && getDistance <= 1000) {
+
+                    // } else if (getDistance > 1000 && getDistance <= 5000) {
+
+                    // } else if (getDistance > 5000) {
+
+                    // }
+                });
+            }
+        ], function(err) {
+
+        });
         Users.update({
             deviceId: user.deviceId
         }, {
             longitude: user.longitude,
             latitude: user.latitude
         }).exec(function(err, inserted) {
+            Users.find({
+                deviceId: inserted.connectedUsers
+            }).exec(function(err, usersFound) {
+                var getDistance = geolib.getDistance({
+                    latitude: parseFloat(user.latitude),
+                    longitude: parseFloat(user.longitude)
+                }, {
+                    latitude: parseFloat(inserted[0].latitude),
+                    longitude: parseFloat(inserted[0].longitude)
+                });
+                console.log(getDistance);
+                if (getDistance <= 10) {
+
+                } else if (getDistance > 10 && getDistance <= 100) {
+
+                } else if (getDistance > 100 && getDistance <= 500) {
+
+                } else if (getDistance > 500 && getDistance <= 1000) {
+
+                } else if (getDistance > 1000 && getDistance <= 5000) {
+
+                } else if (getDistance > 5000) {
+
+                }
+            });
+            var gcmResponse =
+                GCMService.registerClient('AIzaSyAv11GIIUUlsD9Exv9VpzMFWawd0skO574', 1)
+                .sendNotification({
+                    registrationId: '234445',
+                    data: {
+                        message1: 'msg1',
+                        message2: 'msg2'
+                    }
+                });
             if (err) {
                 console.log(err);
                 res.serverError('Error saving location');
             } else {
-                console.log(inserted);
                 res.ok({
                     message: 'Location saved succesffuly'
                 });

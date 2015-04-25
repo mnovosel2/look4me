@@ -35,8 +35,8 @@ module.exports = {
             defaultsTo:''
         },
         registeredDevice:{
-            type:'array',
-            defaultsTo:''
+            type:'string',
+            defaultsTo: ''
         },
         ticket: {
             type: 'string',

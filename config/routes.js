@@ -35,8 +35,10 @@ module.exports.routes = {
   '/': {
     view: 'homepage'
   },
-
-  'POST /users/create':'UsersController.create'
+  'GET /users/get/:deviceId' : 'UsersController.get',
+  'PUT /users/friends' : 'UsersController.friends',
+  'PUT /users/location' : 'UsersController.location',
+  'POST /users/create' : 'UsersController.create'
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

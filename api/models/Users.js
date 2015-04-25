@@ -12,7 +12,8 @@ module.exports = {
         },
         deviceId:{
             type:'string',
-            required:true
+            required:true,
+            unique:true
         },
         deviceOS:{
             type:'string',
@@ -22,7 +23,16 @@ module.exports = {
             type:'string'
         },
         connectedUsers:{
-            type:'array'
+            type:'array',
+            defaultsTo:[]
+        },
+        longitude:{
+            type:'string',
+            defaultsTo:''
+        },
+        latitude:{
+            type:'string',
+            defaultsTo:''
         }
     }
 };

@@ -12,7 +12,8 @@ module.exports = {
         },
         deviceId:{
             type:'string',
-            required:true
+            required:true,
+            unique: true
         },
         deviceOS:{
             type:'string',

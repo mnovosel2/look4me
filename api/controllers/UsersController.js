@@ -6,6 +6,27 @@
  */
 
 module.exports = {
+    test: function(req, res) {
+        // User.find({});
+        var gcmResponse =
+            GCMService.registerClient('AIzaSyAv11GIIUUlsD9Exv9VpzMFWawd0skO574', 1)
+            .sendNotification({
+                registrationId: '234445',
+                data: {
+                    message1: 'msg1',
+                    message2: 'msg2'
+                }
+            });
+        if (gcmResponse) {
+            res.ok({
+                message: 'Ok'
+            });
+        } else {
+            res.badRequest({
+                message: 'Sending failed'
+            });
+        }
+    },
     create: function(req, res) {
         var user = req.body;
         if (!user.deviceId || !user.deviceOS) {
@@ -15,24 +36,29 @@ module.exports = {
             username: user.username || '',
             email: user.email || '',
             deviceId: user.deviceId,
-            deviceOS: user.deviceOS
+            deviceOS: user.deviceOS,
+            registeredDevice:user.registerId
         }).exec(function(err, inserted) {
             if (err) {
                 console.log(err);
                 res.serverError('Error saving user');
             } else {
                 console.log(inserted);
-                res.ok({ message: 'User created succesffuly' });
+                res.ok({
+                    message: 'User created succesffuly'
+                });
             }
         });
     },
-    get: function(req, res){
-        if(req.params.deviceId){
-            Users.findOne({ deviceId: req.params.deviceId }).exec(function(err, model){
-                if(err){
+    get: function(req, res) {
+        if (req.params.deviceId) {
+            Users.findOne({
+                deviceId: req.params.deviceId
+            }).exec(function(err, model) {
+                if (err) {
                     console.log(err);
                     res.serverError(err);
-                } else{
+                } else {
                     res.ok(model);
                 }
             });
@@ -42,13 +68,15 @@ module.exports = {
             });
         }
     },
-    friends: function(req, res){
+    friends: function(req, res) {
         var request = req.body;
-        if(request.friends && request.deviceId){
+        if (request.friends && request.deviceId) {
             async.waterfall([
-                function(callback){
-                    Users.findOne({ deviceId: request.deviceId }).exec(function(err, model){
-                        if(err){
+                function(callback) {
+                    Users.findOne({
+                        deviceId: request.deviceId
+                    }).exec(function(err, model) {
+                        if (err) {
                             console.log('Error while finding user!');
                             res.serverError(err);
                         } else {
@@ -56,13 +84,15 @@ module.exports = {
                         }
                     });
                 },
-                function(result, callback){
-                    request.friends.forEach(function(devId){
-                        Users.findOne({ deviceId: devId }).exec(function(err, wantedUser){
-                            if(err){
+                function(result, callback) {
+                    request.friends.forEach(function(devId) {
+                        Users.findOne({
+                            deviceId: devId
+                        }).exec(function(err, wantedUser) {
+                            if (err) {
                                 console.log('Error trying to find friends of a user!');
                                 callback(err);
-                            } else if(wantedUser) {
+                            } else if (wantedUser) {
                                 callback(null, devId, result);
                             } else {
                                 //callback('Friend not found by deviceId!');
@@ -71,26 +101,32 @@ module.exports = {
                         });
                     });
                 },
-                function(friend, user, callback){
-                    if(!ArrayService.itemExists(user.connectedUsers, friend)){
+                function(friend, user, callback) {
+                    if (!ArrayService.itemExists(user.connectedUsers, friend)) {
                         user.connectedUsers.push(friend);
-                        user.save(function(err, model){
-                            if(err){
+                        user.save(function(err, model) {
+                            if (err) {
                                 console.log('Error while trying to add connectedUsers');
                                 callback(err);
                             } else {
-                                res.ok({ message: 'Friends added succesffuly' });
+                                res.ok({
+                                    message: 'Friends added succesffuly'
+                                });
                             }
                         });
                     } else {
-                        res.ok({ message: 'Friends added succesffuly' });
+                        res.ok({
+                            message: 'Friends added succesffuly'
+                        });
                     }
                 }
-            ], function(err){
+            ], function(err) {
                 res.serverError(err);
             });
-        } else {    
-            res.badRequest({ message: 'Array of ids or your deviceId not present!' });
+        } else {
+            res.badRequest({
+                message: 'Array of ids or your deviceId not present!'
+            });
         }
     },
     location: function(req, res) {
@@ -111,7 +147,9 @@ module.exports = {
                 res.serverError('Error saving location');
             } else {
                 console.log(inserted);
-                res.ok({ message: 'Location saved succesffuly' });
+                res.ok({
+                    message: 'Location saved succesffuly'
+                });
             }
         });
     }

@@ -33,6 +33,10 @@ module.exports = {
         latitude:{
             type:'string',
             defaultsTo:''
+        },
+        registeredDevice:{
+            type:'array',
+            defaultsTo:''
         }
     }
 };

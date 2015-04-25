@@ -22,13 +22,13 @@ module.exports = {
                 res.serverError('Error saving user');
             } else {
                 console.log(inserted);
-                res.ok('User created successfuly');
+                res.ok({ message: 'User created succesffuly' });
             }
         });
     },
     get: function(req, res){
         if(req.params.deviceId){
-            Users.find({ deviceId: req.params.deviceId }).exec(function(err, model){
+            Users.findOne({ deviceId: req.params.deviceId }).exec(function(err, model){
                 if(err){
                     console.log(err);
                     res.serverError(err);
@@ -79,11 +79,11 @@ module.exports = {
                                 console.log('Error while trying to add connectedUsers');
                                 callback(err);
                             } else {
-                                res.ok(model);
+                                res.ok({ message: 'Friends added succesffuly' });
                             }
                         });
                     } else {
-                        res.ok(user);
+                        res.ok({ message: 'Friends added succesffuly' });
                     }
                 }
             ], function(err){
@@ -95,7 +95,7 @@ module.exports = {
     },
     location: function(req, res) {
         var user = req.body;
-        if (!user.longitude || !user.latitude) {
+        if (!user.longitude || !user.latitude || !user.deviceId) {
             res.badRequest({
                 message: 'Required data is missing'
             });
@@ -111,7 +111,7 @@ module.exports = {
                 res.serverError('Error saving location');
             } else {
                 console.log(inserted);
-                res.ok('Location saved succesffuly');
+                res.ok({ message: 'Location saved succesffuly' });
             }
         });
     }

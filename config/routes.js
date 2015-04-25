@@ -34,7 +34,8 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+  'GET /users/get/:deviceId' : 'UsersController.get'
 
   /***************************************************************************
   *                                                                          *

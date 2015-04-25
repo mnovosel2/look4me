@@ -18,5 +18,19 @@ module.exports = {
             console.log(inserted);
             res.ok('Everything ok');
         });
+    },
+    get: function(req, res){
+        if(req.params.deviceId){
+            Users.find({ id: req.params.deviceId }).exec(function(err, model){
+                if(err){
+                    console.log(err);
+                    res.serverError('kifla');
+                }
+                res.ok(model);
+            });
+        } else {
+            res.badRequest({ message: 'No device id present in request!' });
+        }
+        
     }
 };

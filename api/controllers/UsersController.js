@@ -28,7 +28,7 @@ module.exports = {
             });
         }
     },
-    testMpns: function(req, res){
+    testMpns: function(req, res) {
         MPNSService.createMessage('http://s.notify.live.net/u/1/db3/H2QAAAATec3sHtx9Z9bdsuKs6ceVZzKvyCSszXoPe8knetSxSx6hrtqKi0wiu1om9XBoTO6MPjtUVqM4MYeD607FrWuLZk0w-VLyElE7oGHOJ7DkEaFRx-2RAV2aug0wYUBif3U/d2luZG93c3Bob25lZGVmYXVsdA/jLvz1oEkmE6QBO_SlATpzA/8TSa1OL1fmFQ9f7Pa8FJh1uz_5I', 'poruka1', 'poruka2').sendMessage();
         res.ok();
     },
@@ -60,28 +60,29 @@ module.exports = {
             }
         });
     },
-    profile: function(req, res){
+    profile: function(req, res) {
         var model = req.body;
-        if(model.deviceId && model.avatar && model.username){
-            Users.update({ deviceId: model.deviceId }, 
-                {  
-                    avatar: model.avatar,
-                    username: model.username
-                }).exec(function(err, saved){
-                    if(err){
-                        console.log('Error while saving user profile');
-                        req.serverError();
-                    } else {
-                        res.ok({ 
-                            status: 0,
-                            message: 'Profile updated succesffuly' 
-                        });
-                    }
+        if (model.deviceId && model.avatar && model.username) {
+            Users.update({
+                deviceId: model.deviceId
+            }, {
+                avatar: model.avatar,
+                username: model.username
+            }).exec(function(err, saved) {
+                if (err) {
+                    console.log('Error while saving user profile');
+                    req.serverError();
+                } else {
+                    res.ok({
+                        status: 0,
+                        message: 'Profile updated succesffuly'
+                    });
+                }
             });
         } else {
-            res.badRequest({ 
+            res.badRequest({
                 status: 1,
-                message: 'Required data not present' 
+                message: 'Required data not present'
             })
         }
     },
@@ -108,9 +109,9 @@ module.exports = {
                     }).exec(function(err, model) {
                         if (err) {
                             console.log(err);
-                            res.badRequest({ 
+                            res.badRequest({
                                 status: 1,
-                                message: 'User not found!' 
+                                message: 'User not found!'
                             });
                         } else {
                             res.ok({
@@ -123,9 +124,9 @@ module.exports = {
                 }
             ], function(err) {
                 console.log(err);
-                res.badRequest({ 
+                res.badRequest({
                     status: 1,
-                    message: 'User not found!' 
+                    message: 'User not found!'
                 });
             });
         } else {
@@ -152,19 +153,19 @@ module.exports = {
                     });
                 },
                 function(result, callback) {
-                        Users.findOne({
-                            deviceId: request.friend,
-                            ticket: request.ticket
-                        }).exec(function(err, wantedUser) {
-                            if (err) {
-                                console.log('Error trying to find friends of a user!');
-                                callback(err);
-                            } else if (wantedUser) {
-                                callback(null, wantedUser, result);
-                            } else {
-                                console.log('Friend not found by deviceId!');
-                            }
-                        });
+                    Users.findOne({
+                        deviceId: request.friend,
+                        ticket: request.ticket
+                    }).exec(function(err, wantedUser) {
+                        if (err) {
+                            console.log('Error trying to find friends of a user!');
+                            callback(err);
+                        } else if (wantedUser) {
+                            callback(null, wantedUser, result);
+                        } else {
+                            console.log('Friend not found by deviceId!');
+                        }
+                    });
                 },
                 function(friend, user, callback) {
                     if (!ArrayService.itemExists(user.connectedUsers, friend.deviceId)) {
@@ -181,7 +182,7 @@ module.exports = {
                             }
                         });
                     }
-                    if(!ArrayService.itemExists(friend.connectedUsers, user.deviceId)){
+                    if (!ArrayService.itemExists(friend.connectedUsers, user.deviceId)) {
                         friend.connectedUsers.push(user.deviceId);
                         friend.save(function(err, model) {
                             if (err) {
@@ -210,20 +211,26 @@ module.exports = {
             });
         }
     },
-    updateTicket: function(req, res){
+    updateTicket: function(req, res) {
         var model = req.body;
-        if(!model.deviceId || !model.ticket){
-            res.badRequest({ message: 'Required data is missing!' });
+        if (!model.deviceId || !model.ticket) {
+            res.badRequest({
+                message: 'Required data is missing!'
+            });
         } else {
-            Users.update({ deviceId: model.deviceId }, { ticket: model.ticket })
-                .exec(function(err, updated){
-                    if(err){
+            Users.update({
+                    deviceId: model.deviceId
+                }, {
+                    ticket: model.ticket
+                })
+                .exec(function(err, updated) {
+                    if (err) {
                         console.log('Error while updating invite ticket!');
                         res.serverError(err);
                     } else {
-                        res.ok({ 
+                        res.ok({
                             status: 0,
-                            message: 'Ticket updated succesffuly' 
+                            message: 'Ticket updated succesffuly'
                         });
                     }
                 });
@@ -238,106 +245,122 @@ module.exports = {
             });
         }
         async.waterfall([
-            function(callback) {
-                Users.update({
-                    deviceId: user.deviceId
-                }, {
-                    longitude: user.longitude,
-                    latitude: user.latitude
-                }).exec(function(err, inserted) {
-                    if (err) {
-                        callback(err);
-                    } else {
-                        callback(null, inserted);
-                    }
-                });
-            },
-            function(result, callback) {
-                Users.find({
-                    deviceId: result[0].connectedUsers
-                }).exec(function(err, usersFound) {
-                    if (err) {
-                        callback(err);
-                    }
-                    if(!usersFound.length){
-                        res.ok({
-                            status: 0,
-                            refreshDistance: -1
-                        });
-                    } else{
-                        var minimalDistance = geolib.getDistance({
-                                latitude: result[0].latitude,
-                                longitude: result[0].longitude
-                            }, {
-                                latitude: usersFound[0].latitude,
-                                longitude: usersFound[0].longitude
-                            }),
-                            itemWithMinDistance = usersFound[0];
-                        usersFound.forEach(function(item) {
-                            var getDistance = geolib.getDistance({
-                                latitude: result[0].latitude,
-                                longitude: result[0].longitude
-                            }, {
-                                latitude: item.latitude,
-                                longitude: item.longitude
-                            });
-                            if (getDistance < minimalDistance) {
-                                minimalDistance = getDistance;
-                                itemWithMinDistance = item;
-                            }
-                            var gcmResponse =
-                                GCMService.registerClient('AIzaSyAv11GIIUUlsD9Exv9VpzMFWawd0skO574', 1)
-                                .sendNotification({
-                                    registrationId: item.registeredDevice,
-                                    data: {
-                                        latitude: user.latitude,
-                                        longitude: user.longitude
-                                    }
-                                });
-                        });
-
-                        console.log(minimalDistance);
-                        console.log(itemWithMinDistance);
-                        if (getDistance <= 10) {
-                            res.ok({
-                                status: 0,
-                                refreshDistance: 2
-                            });
-                        } else if (getDistance > 10 && getDistance <= 100) {
-                            res.ok({
-                                status: 0,
-                                refreshDistance: 40
-                            });
-                        } else if (getDistance > 100 && getDistance <= 500) {
-                            res.ok({
-                                status: 0,
-                                refreshDistance: 200
-                            });
-                        } else if (getDistance > 500 && getDistance <= 1000) {
-                            res.ok({
-                                status: 0,
-                                refreshDistance: 800
-                            });
-                        } else if (getDistance > 1000 && getDistance <= 5000) {
-                            res.ok({
-                                status: 0,
-                                refreshDistance: 3000
-                            });
-                        } else if (getDistance > 5000) {
-                            res.ok({
-                                status: 0,
-                                refreshDistance: 9000
-                            });
+                function(callback) {
+                    Users.update({
+                        deviceId: user.deviceId
+                    }, {
+                        longitude: user.longitude,
+                        latitude: user.latitude
+                    }).exec(function(err, inserted) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            callback(null, inserted);
                         }
-                    }
-                });
-            }
-        ], function(err) {
-            res.badRequest({
-                status: 1,
-                message:'Error while updating location'
-            });
-        });
+                    });
+                },
+                function(result, callback) {
+                    Users.find({
+                        deviceId: result[0].connectedUsers
+                    }).exec(function(err, usersFound) {
+                        if (err) {
+                            callback(err);
+                        }
+                        if (!usersFound.length) {
+                            res.ok({
+                                status: 0,
+                                refreshDistance: -1
+                            });
+                        } else {
+                            var minimalDistance = null,
+                                itemWithMinDistance = null;
+                            for (var i = usersFound.length - 1; i >= 0; i--) {
+                                if (usersFound[i].latitude && usersFound[i].longitude) {
+                                    minimalDistance = geolib.getDistance({
+                                        latitude: result[0].latitude,
+                                        longitude: result[0].longitude
+                                    }, {
+                                        latitude: usersFound[i].latitude,
+                                        longitude: usersFound[i].longitude
+                                    });
+                                    itemWithMinDistance = usersFound[i];
+                                    break;
+                                }
+                            };
+                        }
+                        if (!minimalDistance || !itemWithMinDistance) {
+                            res.ok({
+                                status: 0,
+                                refreshDistance: -1
+                            });
+                        } else {
+                            usersFound.forEach(function(item) {
+                                if (item.latitude && item.longitude) {
+                                    var getDistance = geolib.getDistance({
+                                        latitude: result[0].latitude,
+                                        longitude: result[0].longitude
+                                    }, {
+                                        latitude: item.latitude,
+                                        longitude: item.longitude
+                                    });
+                                    if (getDistance < minimalDistance) {
+                                        minimalDistance = getDistance;
+                                        itemWithMinDistance = item;
+                                    }
+                                    var gcmResponse =
+                                        GCMService.registerClient('AIzaSyAv11GIIUUlsD9Exv9VpzMFWawd0skO574', 1)
+                                        .sendNotification({
+                                            registrationId: item.registeredDevice,
+                                            data: {
+                                                latitude: user.latitude,
+                                                longitude: user.longitude
+                                            }
+                                        });
+                                }
+                            });
 
+                            console.log(minimalDistance);
+                            console.log(itemWithMinDistance);
+                            if (getDistance <= 10) {
+                                res.ok({
+                                    status: 0,
+                                    refreshDistance: 2
+                                });
+                            } else if (getDistance > 10 && getDistance <= 100) {
+                                res.ok({
+                                    status: 0,
+                                    refreshDistance: 40
+                                });
+                            } else if (getDistance > 100 && getDistance <= 500) {
+                                res.ok({
+                                    status: 0,
+                                    refreshDistance: 200
+                                });
+                            } else if (getDistance > 500 && getDistance <= 1000) {
+                                res.ok({
+                                    status: 0,
+                                    refreshDistance: 800
+                                });
+                            } else if (getDistance > 1000 && getDistance <= 5000) {
+                                res.ok({
+                                    status: 0,
+                                    refreshDistance: 3000
+                                });
+                            } else if (getDistance > 5000) {
+                                res.ok({
+                                    status: 0,
+                                    refreshDistance: 9000
+                                });
+                            }
+                        }
+                    });
+                }
+            ],
+            function(err) {
+                res.badRequest({
+                    status: 1,
+                    message: 'Error while updating location'
+                });
+            });
     }
 };

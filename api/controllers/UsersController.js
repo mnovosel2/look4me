@@ -254,8 +254,13 @@ module.exports = {
                     }).exec(function(err, inserted) {
                         if (err) {
                             callback(err);
-                        } else {
+                        } else if(inserted){
+                            console.log('*****RESULT*****');
+                            console.log(inserted);
+                            console.log('*****RESULT*****');
                             callback(null, inserted);
+                        } else {
+                            callback('User not found!');
                         }
                     });
                 },

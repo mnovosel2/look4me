@@ -18,10 +18,12 @@ module.exports = {
             });
         if (gcmResponse) {
             res.ok({
+                status: 0,
                 message: 'You have been GCMed'
             });
         } else {
             res.badRequest({
+                status: 1,
                 message: 'Bad REQ'
             });
         }
@@ -33,7 +35,10 @@ module.exports = {
     create: function(req, res) {
         var user = req.body;
         if (!user.deviceId || !user.deviceOS) {
-            res.badRequest('Device ID or Device OS is missing');
+            res.badRequest({
+                status: 1,
+                message: 'Device ID or Device OS is missing'
+            });
         }
         Users.create({
             username: user.username || '',
@@ -49,6 +54,7 @@ module.exports = {
             } else {
                 console.log(inserted);
                 res.ok({
+                    status: 0,
                     message: 'User created succesffuly'
                 });
             }
@@ -66,11 +72,17 @@ module.exports = {
                         console.log('Error while saving user profile');
                         req.serverError();
                     } else {
-                        res.ok({ message: 'Profile updated succesffuly' });
+                        res.ok({ 
+                            status: 0,
+                            message: 'Profile updated succesffuly' 
+                        });
                     }
             });
         } else {
-            res.badRequest({ message: 'Required data not present' })
+            res.badRequest({ 
+                status: 1,
+                message: 'Required data not present' 
+            })
         }
     },
     get: function(req, res) {
@@ -96,10 +108,13 @@ module.exports = {
                     }).exec(function(err, model) {
                         if (err) {
                             console.log(err);
-                            res.badRequest({ message: 'User not found!' });
-                            //res.serverError(err);
+                            res.badRequest({ 
+                                status: 1,
+                                message: 'User not found!' 
+                            });
                         } else {
                             res.ok({
+                                status: 0,
                                 user: result,
                                 friends: model
                             });
@@ -108,11 +123,14 @@ module.exports = {
                 }
             ], function(err) {
                 console.log(err);
-                //res.serverError();
-                res.badRequest({ message: 'User not found!' });
+                res.badRequest({ 
+                    status: 1,
+                    message: 'User not found!' 
+                });
             });
         } else {
             res.badRequest({
+                status: 1,
                 message: 'No device id present in request!'
             });
         }
@@ -144,7 +162,6 @@ module.exports = {
                             } else if (wantedUser) {
                                 callback(null, wantedUser, result);
                             } else {
-                                //callback('Friend not found by deviceId!');
                                 console.log('Friend not found by deviceId!');
                             }
                         });
@@ -158,6 +175,7 @@ module.exports = {
                                 callback(err);
                             } else {
                                 res.ok({
+                                    status: 0,
                                     message: 'Friends added succesffuly'
                                 });
                             }
@@ -170,6 +188,7 @@ module.exports = {
                                 callback(err);
                             } else {
                                 res.ok({
+                                    status: 0,
                                     message: 'Friends added succesffuly'
                                 });
                             }
@@ -177,6 +196,7 @@ module.exports = {
                     }
                     else {
                         res.ok({
+                            status: 0,
                             message: 'Friends added succesffuly'
                         });
                     }
@@ -186,7 +206,8 @@ module.exports = {
             });
         } else {
             res.badRequest({
-                message: 'Array of ids or your deviceId not present!'
+                status: 1,
+                message: 'Friend id or your deviceId not present!'
             });
         }
     },
@@ -201,7 +222,10 @@ module.exports = {
                         console.log('Error while updating invite ticket!');
                         res.serverError(err);
                     } else {
-                        res.ok({ message: 'Ticket updated succesffuly' });
+                        res.ok({ 
+                            status: 0,
+                            message: 'Ticket updated succesffuly' 
+                        });
                     }
                 });
         }
@@ -210,6 +234,7 @@ module.exports = {
         var user = req.body;
         if (!user.longitude || !user.latitude || !user.deviceId) {
             res.badRequest({
+                status: 1,
                 message: 'Required data is missing'
             });
         }
@@ -310,6 +335,7 @@ module.exports = {
             }
         ], function(err) {
             res.badRequest({
+                status: 1,
                 message:'Error while updating location'
             });
         });

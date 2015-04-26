@@ -269,7 +269,7 @@ module.exports = {
                     var minimalDistance = null,
                         itemWithMinDistance = null;
                     if(!result.length){
-                        callback('Error while updating user');
+                        return callback('Error while updating user');
                     }
                     Users.find({
                         deviceId: result[0].connectedUsers

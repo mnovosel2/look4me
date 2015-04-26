@@ -155,7 +155,14 @@ latitude *string*
 **RESPONSE**
 
 ```{
-    "message": "Location saved succesffuly"
+    "status":0,
+    "refreshDistance":40
 }```
 
+**If there are no friends**
 
+
+```{
+    "status":0,
+    "refreshDistance":-1
+}```

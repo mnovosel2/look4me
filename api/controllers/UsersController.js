@@ -278,7 +278,7 @@ module.exports = {
                             callback(err);
                         }
                         if (!usersFound.length) {
-                            res.ok({
+                            return res.ok({
                                 status: 0,
                                 refreshDistance: -1
                             });
@@ -298,7 +298,7 @@ module.exports = {
                             }
                         }
                         if (!minimalDistance || !itemWithMinDistance) {
-                            res.ok({
+                            return res.ok({
                                 status: 0,
                                 refreshDistance: -1
                             });
@@ -331,32 +331,32 @@ module.exports = {
                             console.log(minimalDistance);
                             console.log(itemWithMinDistance);
                             if (getDistance <= 10) {
-                                res.ok({
+                                return res.ok({
                                     status: 0,
                                     refreshDistance: 2
                                 });
                             } else if (getDistance > 10 && getDistance <= 100) {
-                                res.ok({
+                                return res.ok({
                                     status: 0,
                                     refreshDistance: 40
                                 });
                             } else if (getDistance > 100 && getDistance <= 500) {
-                                res.ok({
+                                return res.ok({
                                     status: 0,
                                     refreshDistance: 200
                                 });
                             } else if (getDistance > 500 && getDistance <= 1000) {
-                                res.ok({
+                                return res.ok({
                                     status: 0,
                                     refreshDistance: 800
                                 });
                             } else if (getDistance > 1000 && getDistance <= 5000) {
-                                res.ok({
+                                return res.ok({
                                     status: 0,
                                     refreshDistance: 3000
                                 });
                             } else if (getDistance > 5000) {
-                                res.ok({
+                                return res.ok({
                                     status: 0,
                                     refreshDistance: 9000
                                 });

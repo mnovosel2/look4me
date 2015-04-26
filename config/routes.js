@@ -33,7 +33,7 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
-    view: 'homepage'
+    view: 'home/index'
   },
   'GET /users/get/:deviceId' : 'UsersController.get',
   'PUT /users/friends' : 'UsersController.friends',

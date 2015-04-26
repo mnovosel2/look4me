@@ -1,0 +1,133 @@
+extends ../default/layout
+block content
+	header
+		nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
+			.container
+				.navbar-header
+					button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+						span.fa.fa-bars.fa-lg
+					a.navbar-brand(href='/')
+						img.logo(src='/images/weblogo2.png', alt='')
+				#bs-example-navbar-collapse-1.collapse.navbar-collapse
+					ul.nav.navbar-nav.navbar-right
+						li
+							a(href='#about') about
+						li
+							a(href='#features') features
+						li
+							a(href='#screens') screens
+						li
+							a.getApp(href='#getApp') download
+		.tp-banner-container
+			.tp-banner
+				ul
+					li(data-transition='fade', data-slotamount='7', data-masterspeed='1500')
+						img(src='/img/transparent.png', alt='slidebg1', data-bgfit='cover', data-bgposition='left top', data-bgrepeat='no-repeat')
+						.tp-caption.lfl.fadeout.hidden-xs(data-x='left', data-y='bottom', data-hoffset='30', data-voffset='0', data-speed='500', data-start='700', data-easing='Power4.easeOut')
+							img(src='/images/berry/Slides/hand-freeze.png', alt='')
+						.tp-caption.lfl.fadeout.visible-xs(data-x='left', data-y='center', data-hoffset='700', data-voffset='0', data-speed='500', data-start='700', data-easing='Power4.easeOut')
+							img(src='/images/berry/iphone-freeze.png', alt='')
+						.tp-caption.large_white_bold.sft(data-x='550', data-y='center', data-hoffset='0', data-voffset='-80', data-speed='500', data-start='1200', data-easing='Power4.easeOut')
+							| Oleose
+						.tp-caption.large_white_light.sfr(data-x='770', data-y='center', data-hoffset='0', data-voffset='-80', data-speed='500', data-start='1400', data-easing='Power4.easeOut')
+							| App
+						.tp-caption.large_white_light.sfb(data-x='550', data-y='center', data-hoffset='0', data-voffset='0', data-speed='1000', data-start='1500', data-easing='Power4.easeOut')
+							| Landing Theme
+						.tp-caption.sfb.hidden-xs(data-x='550', data-y='center', data-hoffset='0', data-voffset='85', data-speed='1000', data-start='1700', data-easing='Power4.easeOut')
+							a.btn.btn-primary.inverse.btn-lg(href='#about') LEARN MORE
+						.tp-caption.sfr.hidden-xs(data-x='730', data-y='center', data-hoffset='0', data-voffset='85', data-speed='1500', data-start='1900', data-easing='Power4.easeOut')
+							a.btn.btn-default.btn-lg(href='#getApp') GET APP
+					li(data-transition='zoomout', data-slotamount='7', data-masterspeed='1000')
+						img(src='/img/transparent.png', alt='slidebg1', data-bgfit='cover', data-bgposition='left top', data-bgrepeat='no-repeat')
+						.tp-caption.lfb.fadeout.hidden-xs(data-x='center', data-y='bottom', data-hoffset='0', data-voffset='0', data-speed='1000', data-start='700', data-easing='Power4.easeOut')
+							img(src='/images/berry/Slides/freeze-slide2.png', alt='')
+						.tp-caption.large_white_light.sft(data-x='center', data-y='250', data-hoffset='0', data-voffset='0', data-speed='1000', data-start='1400', data-easing='Power4.easeOut')
+							| Every Pixel 
+						i.fa.fa-heart
+	.wrapper
+		section#about
+			.container
+				.section-heading.scrollpoint.sp-effect3
+					h1 About
+					.divider
+					p Look4.me is an application for tracking realtime location of your friends using existing map services.
+		section#features
+			.container
+				.section-heading.scrollpoint.sp-effect3
+					h1 Features
+					.divider
+					p Most exciting features
+				.row
+					.col-md-12.col-sm-12.scrollpoint.sp-effect2
+						.media.feature.col-md-4.col-sm-4
+							a.pull-left(href='#')
+								i.fa.fa-map-marker.fa-2x
+							.media-body
+								h3.media-heading Friends locations
+								|	Track your friend locations in real time
+						.media.feature.col-md-4.col-sm-4
+							a.pull-left(href='#')
+								i.fa.fa-users.fa-2x
+							.media-body
+								h3.media-heading List of friends
+								|	See list of friends with calculated distances
+						.media.feature.col-md-4.col-sm-4
+							a.pull-left(href='#')
+								i.fa.fa-retweet.fa-2x
+							.media-body
+								h3.media-heading Notifications
+								|	Get notified when your friend is nearby.
+		section#screens
+			.container
+				.section-heading.scrollpoint.sp-effect3
+					h1 Screens
+					.divider
+					p See what’s included in the App
+				.slider.filtering.scrollpoint.sp-effect5
+					.one
+						img(src='/images/screens/splash_android.jpg', alt='')
+						h4 Profile Page
+					.two
+						img(src='/images/screens/users_android.jpg', alt='')
+						h4 Toggel Menu
+					.three
+						img(src='/images/screens/sidemenu_android.jpg', alt='')
+						h4 Weather Forcast
+					.one
+						img(src='/images/screens/qr_android.jpg', alt='')
+						h4 Sign Up
+					.one
+						img(src='/images/screens/add_link_android.jpg', alt='')
+						h4 Event Calendar
+		section#getApp
+			.container-fluid
+				.section-heading.inverse.scrollpoint.sp-effect3
+					h1 Get App
+					.divider
+					p Choose your native platform and get started!
+				.row
+					.col-md-12
+						.hanging-phone.scrollpoint.sp-effect2.hidden-xs
+							img(src='/images/berry/freeze-angled2.png', alt='')
+						.platforms
+							a.btn.btn-primary.inverse.scrollpoint.sp-effect1(href='#')
+								i.fa.fa-android.fa-3x.pull-left
+								span Download for
+								br
+								b Android
+							a.btn.btn-primary.inverse.scrollpoint.sp-effect2(href='#')
+								i.fa.fa-windows.fa-3x.pull-left
+								span Download for
+								br
+								b Windows Phone
+		footer
+			.container
+				a.scrollpoint.sp-effect3(href='#')
+					img.logo(src='/images/weblogo2.png', alt='')
+			.social
+				a.scrollpoint.sp-effect3(href='https://twitter.com/look4meapp' target="_blank")
+					i.fa.fa-twitter.fa-lg
+				a.scrollpoint.sp-effect3(href='#')
+					i.fa.fa-youtube.fa-lg
+				a.scrollpoint.sp-effect3(href='https://www.facebook.com/look4.meapp' target="_blank")
+					i.fa.fa-facebook.fa-lg

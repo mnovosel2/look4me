@@ -83,7 +83,7 @@ module.exports = {
             res.badRequest({
                 status: 1,
                 message: 'Required data not present'
-            })
+            });
         }
     },
     get: function(req, res) {
@@ -243,6 +243,7 @@ module.exports = {
                 status: 1,
                 message: 'Required data is missing'
             });
+            return;
         }
         async.waterfall([
                 function(callback) {
@@ -254,7 +255,7 @@ module.exports = {
                     }).exec(function(err, inserted) {
                         if (err) {
                             callback(err);
-                        } else if(inserted){
+                        } else if (inserted) {
                             console.log('*****RESULT*****');
                             console.log(inserted);
                             console.log('*****RESULT*****');
@@ -265,6 +266,11 @@ module.exports = {
                     });
                 },
                 function(result, callback) {
+                    var minimalDistance = null,
+                        itemWithMinDistance = null;
+                    if(!result.length){
+                        callback('Error while updating user');
+                    }
                     Users.find({
                         deviceId: result[0].connectedUsers
                     }).exec(function(err, usersFound) {
@@ -277,8 +283,6 @@ module.exports = {
                                 refreshDistance: -1
                             });
                         } else {
-                            var minimalDistance = null,
-                                itemWithMinDistance = null;
                             for (var i = usersFound.length - 1; i >= 0; i--) {
                                 if (usersFound[i].latitude && usersFound[i].longitude) {
                                     minimalDistance = geolib.getDistance({
@@ -291,7 +295,7 @@ module.exports = {
                                     itemWithMinDistance = usersFound[i];
                                     break;
                                 }
-                            };
+                            }
                         }
                         if (!minimalDistance || !itemWithMinDistance) {
                             res.ok({

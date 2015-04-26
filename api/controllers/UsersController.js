@@ -303,9 +303,10 @@ module.exports = {
                                 refreshDistance: -1
                             });
                         } else {
+                            var getDistance=0;
                             usersFound.forEach(function(item) {
                                 if (item.latitude && item.longitude) {
-                                    var getDistance = geolib.getDistance({
+                                    getDistance = geolib.getDistance({
                                         latitude: result[0].latitude,
                                         longitude: result[0].longitude
                                     }, {

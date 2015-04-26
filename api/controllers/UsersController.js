@@ -181,12 +181,6 @@ module.exports = {
                             }
                         });
                     }
-                    else {
-                        res.ok({
-                            status: 0,
-                            message: 'Friends added succesffuly'
-                        });
-                    }
                     if(!ArrayService.itemExists(friend.connectedUsers, user.deviceId)){
                         friend.connectedUsers.push(user.deviceId);
                         friend.save(function(err, model) {
@@ -201,12 +195,10 @@ module.exports = {
                             }
                         });
                     }
-                    else {
-                        res.ok({
-                            status: 0,
-                            message: 'Friends added succesffuly'
-                        });
-                    }
+                    res.ok({
+                        status: 0,
+                        message: 'Friends added succesffuly'
+                    });
                 }
             ], function(err) {
                 res.serverError(err);

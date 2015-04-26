@@ -259,77 +259,77 @@ module.exports = {
                     if (err) {
                         callback(err);
                     }
-                    var minimalDistance = geolib.getDistance({
-                            latitude: result[0].latitude,
-                            longitude: result[0].longitude
-                        }, {
-                            latitude: usersFound[0].latitude,
-                            longitude: usersFound[0].longitude
-                        }),
-                        itemWithMinDistance = usersFound[0];
-                    usersFound.forEach(function(item) {
-                        var getDistance = geolib.getDistance({
-                            latitude: result[0].latitude,
-                            longitude: result[0].longitude
-                        }, {
-                            latitude: item.latitude,
-                            longitude: item.longitude
+                    if(!usersFound.length){
+                        res.ok({
+                            status: 0,
+                            refreshDistance: -1
                         });
-                        if (getDistance < minimalDistance) {
-                            minimalDistance = getDistance;
-                            itemWithMinDistance = item;
-                        }
-                        var gcmResponse =
-                            GCMService.registerClient('AIzaSyAv11GIIUUlsD9Exv9VpzMFWawd0skO574', 1)
-                            .sendNotification({
-                                registrationId: item.registeredDevice,
-                                data: {
-                                    latitude: user.latitude,
-                                    longitude: user.longitude
-                                }
+                    } else{
+                        var minimalDistance = geolib.getDistance({
+                                latitude: result[0].latitude,
+                                longitude: result[0].longitude
+                            }, {
+                                latitude: usersFound[0].latitude,
+                                longitude: usersFound[0].longitude
+                            }),
+                            itemWithMinDistance = usersFound[0];
+                        usersFound.forEach(function(item) {
+                            var getDistance = geolib.getDistance({
+                                latitude: result[0].latitude,
+                                longitude: result[0].longitude
+                            }, {
+                                latitude: item.latitude,
+                                longitude: item.longitude
                             });
-                    });
+                            if (getDistance < minimalDistance) {
+                                minimalDistance = getDistance;
+                                itemWithMinDistance = item;
+                            }
+                            var gcmResponse =
+                                GCMService.registerClient('AIzaSyAv11GIIUUlsD9Exv9VpzMFWawd0skO574', 1)
+                                .sendNotification({
+                                    registrationId: item.registeredDevice,
+                                    data: {
+                                        latitude: user.latitude,
+                                        longitude: user.longitude
+                                    }
+                                });
+                        });
 
-                    console.log(minimalDistance);
-                    console.log(itemWithMinDistance);
-                    if (getDistance <= 10) {
-                        res.ok({
-                            minimalDistance: minimalDistance,
-                            itemWithMinDistance: itemWithMinDistance,
-                            refreshDistance: 2
-                        });
-                    } else if (getDistance > 10 && getDistance <= 100) {
-                        res.ok({
-                            minimalDistance: minimalDistance,
-                            itemWithMinDistance: itemWithMinDistance,
-                            refreshDistance: 40
-                        });
-                    } else if (getDistance > 100 && getDistance <= 500) {
-                        res.ok({
-                            minimalDistance: minimalDistance,
-                            itemWithMinDistance: itemWithMinDistance,
-                            refreshDistance: 200
-                        });
-                    } else if (getDistance > 500 && getDistance <= 1000) {
-                        res.ok({
-                            minimalDistance: minimalDistance,
-                            itemWithMinDistance: itemWithMinDistance,
-                            refreshDistance: 800
-                        });
-                    } else if (getDistance > 1000 && getDistance <= 5000) {
-                        res.ok({
-                            minimalDistance: minimalDistance,
-                            itemWithMinDistance: itemWithMinDistance,
-                            refreshDistance: 3000
-                        });
-                    } else if (getDistance > 5000) {
-                        res.ok({
-                            minimalDistance: minimalDistance,
-                            itemWithMinDistance: itemWithMinDistance,
-                            refreshDistance: 9000
-                        });
+                        console.log(minimalDistance);
+                        console.log(itemWithMinDistance);
+                        if (getDistance <= 10) {
+                            res.ok({
+                                status: 0,
+                                refreshDistance: 2
+                            });
+                        } else if (getDistance > 10 && getDistance <= 100) {
+                            res.ok({
+                                status: 0,
+                                refreshDistance: 40
+                            });
+                        } else if (getDistance > 100 && getDistance <= 500) {
+                            res.ok({
+                                status: 0,
+                                refreshDistance: 200
+                            });
+                        } else if (getDistance > 500 && getDistance <= 1000) {
+                            res.ok({
+                                status: 0,
+                                refreshDistance: 800
+                            });
+                        } else if (getDistance > 1000 && getDistance <= 5000) {
+                            res.ok({
+                                status: 0,
+                                refreshDistance: 3000
+                            });
+                        } else if (getDistance > 5000) {
+                            res.ok({
+                                status: 0,
+                                refreshDistance: 9000
+                            });
+                        }
                     }
-
                 });
             }
         ], function(err) {

@@ -89,6 +89,21 @@ email? *string*
     "message": "User created succesffuly"
 }```
 
+##UPDATE PROFILE
+
+**PUT**
+
+*/users/profile*
+
+deviceId *string*
+
+avatar (link to avatar) *string*
+
+username *string username*
+
+```{
+    "message": "Profile updated succesffuly"
+}```
 
 ##ADD FRIENDS
 

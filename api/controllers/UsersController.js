@@ -174,10 +174,10 @@ module.exports = {
                                 console.log('Error while trying to add connectedUsers');
                                 callback(err);
                             } else {
-                                res.ok({
+                                /*res.ok({
                                     status: 0,
                                     message: 'Friends added succesffuly'
-                                });
+                                });*/
                             }
                         });
                     }
@@ -188,10 +188,10 @@ module.exports = {
                                 console.log('Error while trying to add connectedUsers');
                                 callback(err);
                             } else {
-                                res.ok({
+                                /*res.ok({
                                     status: 0,
                                     message: 'Friends added succesffuly'
-                                });
+                                });*/
                             }
                         });
                     }

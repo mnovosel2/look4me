@@ -96,7 +96,8 @@ module.exports = {
                     }).exec(function(err, model) {
                         if (err) {
                             console.log(err);
-                            res.serverError(err);
+                            res.badRequest({ message: 'User not found!' });
+                            //res.serverError(err);
                         } else {
                             res.ok({
                                 user: result,
@@ -107,7 +108,8 @@ module.exports = {
                 }
             ], function(err) {
                 console.log(err);
-                res.serverError();
+                //res.serverError();
+                res.badRequest({ message: 'User not found!' });
             });
         } else {
             res.badRequest({

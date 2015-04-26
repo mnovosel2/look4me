@@ -180,7 +180,14 @@ module.exports = {
                                 });
                             }
                         });
-                    } else if(!ArrayService.itemExists(friend.connectedUsers, user.deviceId)){
+                    }
+                    else {
+                        res.ok({
+                            status: 0,
+                            message: 'Friends added succesffuly'
+                        });
+                    }
+                    if(!ArrayService.itemExists(friend.connectedUsers, user.deviceId)){
                         friend.connectedUsers.push(user.deviceId);
                         friend.save(function(err, model) {
                             if (err) {

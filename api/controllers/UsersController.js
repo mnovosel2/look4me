@@ -142,7 +142,7 @@ module.exports = {
                                 console.log('Error trying to find friends of a user!');
                                 callback(err);
                             } else if (wantedUser) {
-                                callback(null, request.friend, result);
+                                callback(null, wantedUser, result);
                             } else {
                                 //callback('Friend not found by deviceId!');
                                 console.log('Friend not found by deviceId!');
@@ -150,8 +150,8 @@ module.exports = {
                         });
                 },
                 function(friend, user, callback) {
-                    if (!ArrayService.itemExists(user.connectedUsers, friend)) {
-                        user.connectedUsers.push(friend);
+                    if (!ArrayService.itemExists(user.connectedUsers, friend.deviceId)) {
+                        user.connectedUsers.push(friend.deviceId);
                         user.save(function(err, model) {
                             if (err) {
                                 console.log('Error while trying to add connectedUsers');
@@ -162,7 +162,20 @@ module.exports = {
                                 });
                             }
                         });
-                    } else {
+                    } else if(!ArrayService.itemExists(friend.connectedUsers, user.deviceId)){
+                        friend.connectedUsers.push(user.deviceId);
+                        friend.save(function(err, model) {
+                            if (err) {
+                                console.log('Error while trying to add connectedUsers');
+                                callback(err);
+                            } else {
+                                res.ok({
+                                    message: 'Friends added succesffuly'
+                                });
+                            }
+                        });
+                    }
+                    else {
                         res.ok({
                             message: 'Friends added succesffuly'
                         });

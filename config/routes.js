@@ -39,7 +39,8 @@ module.exports.routes = {
   'PUT /users/friends' : 'UsersController.friends',
   'PUT /users/location' : 'UsersController.location',
   'POST /users/create' : 'UsersController.create',
-  'PUT /users/ticket' : 'UsersController.updateTicket'
+  'PUT /users/ticket' : 'UsersController.updateTicket',
+  'PUT /users/profile' : 'UsersController.profile'
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

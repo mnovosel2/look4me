@@ -41,6 +41,10 @@ module.exports = {
         ticket: {
             type: 'string',
             required: false
+        },
+        avatar: {
+            type: 'string',
+            defaultsTo: ''
         }
     }
 };

@@ -26,6 +26,10 @@ module.exports = {
             });
         }
     },
+    testMpns: function(req, res){
+        MPNSService.createMessage('http://s.notify.live.net/u/1/db3/H2QAAAATec3sHtx9Z9bdsuKs6ceVZzKvyCSszXoPe8knetSxSx6hrtqKi0wiu1om9XBoTO6MPjtUVqM4MYeD607FrWuLZk0w-VLyElE7oGHOJ7DkEaFRx-2RAV2aug0wYUBif3U/d2luZG93c3Bob25lZGVmYXVsdA/jLvz1oEkmE6QBO_SlATpzA/8TSa1OL1fmFQ9f7Pa8FJh1uz_5I', 'poruka1', 'poruka2').sendMessage();
+        res.ok();
+    },
     create: function(req, res) {
         var user = req.body;
         if (!user.deviceId || !user.deviceOS) {
@@ -36,7 +40,8 @@ module.exports = {
             email: user.email || '',
             deviceId: user.deviceId,
             deviceOS: user.deviceOS,
-            registeredDevice: user.registerId
+            registeredDevice: user.registerId,
+            avatar: req.baseUrl + '/images/profile.png'
         }).exec(function(err, inserted) {
             if (err) {
                 console.log(err);
@@ -48,6 +53,25 @@ module.exports = {
                 });
             }
         });
+    },
+    profile: function(req, res){
+        var model = req.body;
+        if(model.deviceId && model.avatar && model.username){
+            Users.update({ deviceId: model.deviceId }, 
+                {  
+                    avatar: model.avatar,
+                    username: model.username
+                }).exec(function(err, saved){
+                    if(err){
+                        console.log('Error while saving user profile');
+                        req.serverError();
+                    } else {
+                        res.ok({ message: 'Profile updated succesffuly' });
+                    }
+            });
+        } else {
+            res.badRequest({ message: 'Required data not present' })
+        }
     },
     get: function(req, res) {
         if (req.params.deviceId) {

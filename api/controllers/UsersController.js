@@ -334,32 +334,44 @@ module.exports = {
                             if (getDistance <= 10) {
                                 return res.ok({
                                     status: 0,
-                                    refreshDistance: 2
+                                    refreshDistance: 2,
+                                    refreshInterval:3,
+                                    accuracyClass:10
                                 });
                             } else if (getDistance > 10 && getDistance <= 100) {
                                 return res.ok({
                                     status: 0,
-                                    refreshDistance: 40
+                                    refreshDistance: 40,
+                                    refreshInterval:10,
+                                    accuracyClass:20
                                 });
                             } else if (getDistance > 100 && getDistance <= 500) {
                                 return res.ok({
                                     status: 0,
-                                    refreshDistance: 200
+                                    refreshDistance: 200,
+                                    refreshInterval:20,
+                                    accuracyClass:50
                                 });
                             } else if (getDistance > 500 && getDistance <= 1000) {
                                 return res.ok({
                                     status: 0,
-                                    refreshDistance: 800
+                                    refreshDistance: 800,
+                                    refreshInterval:30,
+                                    accuracyClass:60
                                 });
                             } else if (getDistance > 1000 && getDistance <= 5000) {
                                 return res.ok({
                                     status: 0,
-                                    refreshDistance: 3000
+                                    refreshDistance: 3000,
+                                    refreshInterval:40,
+                                    accuracyClass:80
                                 });
                             } else if (getDistance > 5000) {
                                 return res.ok({
                                     status: 0,
-                                    refreshDistance: 9000
+                                    refreshDistance: 5000,
+                                    refreshInterval:70,
+                                    accuracyClass:100
                                 });
                             }
                         }

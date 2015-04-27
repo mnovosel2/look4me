@@ -300,7 +300,9 @@ module.exports = {
                         if (!minimalDistance || !itemWithMinDistance) {
                             return res.ok({
                                 status: 0,
-                                refreshDistance: -1
+                                refreshDistance: -1,
+                                refreshInterval:-1,
+                                accuracyClass:-1
                             });
                         } else {
                             var getDistance=0;

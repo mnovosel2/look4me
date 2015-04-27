@@ -156,7 +156,9 @@ latitude *string*
 
 ```{
     "status":0,
-    "refreshDistance":40
+    "refreshDistance":40,
+    "refreshInterval":70,
+    "accuracyClass":100,
 }```
 
 **If there are no friends**
@@ -164,5 +166,7 @@ latitude *string*
 
 ```{
     "status":0,
-    "refreshDistance":-1
+    "refreshDistance":-1.
+    "refreshInterval":-1,
+    "accuracyClass":-1
 }```

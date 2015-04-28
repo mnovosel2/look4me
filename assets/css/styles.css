@@ -132,7 +132,7 @@ header .navbar-default.scrolled {
   transition: all 0.25s ease-in-out;
 }
 header .navbar-default.scrolled .navbar-brand {
-  padding: 15px 20px;
+  padding: 5px 20px;
 }
 header .navbar-default.scrolled .navbar-brand img {
   width: auto;
@@ -748,24 +748,7 @@ form textarea.form-control {
     -webkit-transform: scale(1);
   }
 }
-header {
-  background: #512DA8;
-  /* Old browsers */
-  background: -moz-linear-gradient(-45deg, #512DA8 0%, #FF5252 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #512DA8), color-stop(100%, #FF5252));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(-45deg, #512DA8 0%, #FF5252 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(-45deg, #512DA8 0%, #FF5252 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(-45deg, #512DA8 0%, #FF5252 100%);
-  /* IE10+ */
-  background: linear-gradient(-45deg, #512DA8 0%, #FF5252 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#512DA8, endColorstr=#FF5252, GradientType=1);
-  /* IE6-9 fallback on horizontal gradient */
-}
+
 header .navbar-default ul.navbar-nav li a {
   color: #ffffff;
   background: none;
@@ -805,6 +788,22 @@ header .navbar-default.scrolled .navbar-brand {
 }
 section .section-heading .divider:after {
   background: #009688;
+}
+.banner{
+  background: url('/images/banner3.jpg') no-repeat center top;
+  height:800px;
+   max-width:100%; 
+   background:no-repeat center top cover;
+}
+@media all and (max-width: 1080px) and (min-width: 750px) {
+  .banner{
+    background: url('/images/banner3_medium.jpg') no-repeat center top;
+  }
+}
+@media all and (max-width: 749px) and (min-width: 350px) {
+  .banner{
+    background: url('/images/banner3_small.jpg') no-repeat center top;
+  }
 }
 section#about .about-item i.fa {
   border: 2px solid #009688;

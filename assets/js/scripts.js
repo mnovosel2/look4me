@@ -1,15 +1,15 @@
 var appMaster = {
 
-   preLoader: function(){
-        imageSources = []
-        $('img').each(function() {
-            var sources = $(this).attr('src');
-            imageSources.push(sources);
-        });
-        if($(imageSources).load()){
-            $('.pre-loader').fadeOut('slow');
-        }
-    },
+   // preLoader: function(){
+   //      imageSources = []
+   //      $('img').each(function() {
+   //          var sources = $(this).attr('src');
+   //          imageSources.push(sources);
+   //      });
+   //      if($(imageSources).load()){
+   //          $('.pre-loader').fadeOut('slow');
+   //      }
+   //  },
 
     smoothScroll: function() {
         // Smooth Scrolling
@@ -103,25 +103,25 @@ var appMaster = {
         $('.scrollpoint.sp-effect5').waypoint(function(){$(this).toggleClass('active');$(this).toggleClass('animated fadeInUp');},{offset:'100%'});
     },
 
-    revSlider: function() {
+    // revSlider: function() {
 
-        var docHeight = $(window).height();
+    //     var docHeight = $(window).height();
 
 
-        var mainSlider = $('.tp-banner').revolution({
-            delay: 9000,
-            startwidth: 1170,
-            startheight: docHeight,
-            hideThumbs: 10,
-            touchenabled: false,
-            fullWidth: "on",
-            hideTimerBar: "on",
-            fullScreen: "on",
-            onHoverStop: "off",
-            fullScreenOffsetContainer: ""
-        });
+    //     var mainSlider = $('.tp-banner').revolution({
+    //         delay: 9000,
+    //         startwidth: 1170,
+    //         startheight: docHeight,
+    //         hideThumbs: 10,
+    //         touchenabled: false,
+    //         fullWidth: "on",
+    //         hideTimerBar: "on",
+    //         fullScreen: "on",
+    //         onHoverStop: "off",
+    //         fullScreenOffsetContainer: ""
+    //     });
         
-    },
+    // },
 
     scrollMenu: function(){
         var num = 50; //number of pixels before modifying styles
@@ -161,8 +161,6 @@ $(document).ready(function() {
     appMaster.screensCarousel();
 
     appMaster.animateScript();
-
-    appMaster.revSlider();
 
     appMaster.scrollMenu();
 

@@ -18,6 +18,7 @@ ROOT URL
 **RESPONSE**
 
 ```{
+ "status":0,
 "user": {
     "username": "",
     "email": "",
